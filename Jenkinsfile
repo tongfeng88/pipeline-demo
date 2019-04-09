@@ -50,8 +50,8 @@ pipeline {
                 }
             }
             steps {
-                sh "cat >k8s-rc.yaml <<EFO"
-                sh "apiVersion: v1 \
+                sh "cat >k8s-rc.yaml <<EFO \
+                    apiVersion: v1 \
                     kind: ReplicationController \
                     metadata: \
                       name: pipeline-demo \
