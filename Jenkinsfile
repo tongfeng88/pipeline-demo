@@ -55,10 +55,8 @@ pipeline {
                 }
             }
             steps {
-                sh "echo -------------------------------------
-                    # 创建k8s容器
-                    cat >k8s-rc.yaml <<EFO
-                    apiVersion: v1
+                sh "cat >k8s-rc.yaml <<EFO"
+                sh "apiVersion: v1
                     kind: ReplicationController
                     metadata:
                       name: pipeline-demo
@@ -79,8 +77,7 @@ pipeline {
                             ports:
                             - containerPort: 2002
                     EFO"
-                sh "# 先删除，再创建
-                    rancher kubectl delete -f k8s-rc.yaml --ignore-not-found=true"
+                sh "rancher kubectl delete -f k8s-rc.yaml --ignore-not-found=true"
                 sh "sleep 5"
                 sh "rancher kubectl create -f k8s-rc.yaml"
             }
