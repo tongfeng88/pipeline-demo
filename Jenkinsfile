@@ -49,11 +49,6 @@ pipeline {
                     expression { env.GIT_TAG != null }
                 }
             }
-            agent {
-                docker {
-                    image 'lwolf/helm-kubectl-docker'
-                }
-            }
             steps {
                 sh "cat >k8s-rc.yaml <<EFO"
                 sh "apiVersion: v1
