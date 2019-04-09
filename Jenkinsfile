@@ -55,10 +55,34 @@ pipeline {
                 }
             }
             steps {
-                sh "mkdir -p ~/.kube"
-                sh "echo ${K8S_CONFIG} | base64 -d > ~/.kube/config"
-                sh "sed -e 's#{IMAGE_URL}#${params.HARBOR_HOST}/${params.DOCKER_IMAGE}#g;s#{IMAGE_TAG}#${GIT_TAG}#g;s#{APP_NAME}#${params.APP_NAME}#g;s#{SPRING_PROFILE}#k8s-test#g' k8s-deployment.tpl > k8s-deployment.yml"
-                sh "kubectl apply -f k8s-deployment.yml --namespace=${params.K8S_NAMESPACE}"
+                sh "echo -------------------------------------
+                    # 创建k8s容器
+                    cat >k8s-rc.yaml <<EFO
+                    apiVersion: v1
+                    kind: ReplicationController
+                    metadata:
+                      name: pipeline-demo
+                      labels:
+                        name: pipeline-demo
+                    spec:
+                      replicas: 1
+                      selector:
+                        name: pipeline-demo
+                      template:
+                        metadata:
+                          labels:
+                            name: pipeline-demo
+                        spec:
+                          containers:
+                          - name: pipeline-demo
+                            image: ${params.HARBOR_HOST}/${params.DOCKER_IMAGE}:${GIT_TAG}
+                            ports:
+                            - containerPort: 2002
+                    EFO"
+                sh "# 先删除，再创建
+                    rancher kubectl delete -f k8s-rc.yaml --ignore-not-found=true"
+                sh "sleep 5"
+                sh "rancher kubectl create -f k8s-rc.yaml"
             }
             
         }
