@@ -51,26 +51,26 @@ pipeline {
             }
             steps {
                 sh "cat >k8s-rc.yaml <<EFO"
-                sh "apiVersion: v1
-                    kind: ReplicationController
-                    metadata:
-                      name: pipeline-demo
-                      labels:
-                        name: pipeline-demo
-                    spec:
-                      replicas: 1
-                      selector:
-                        name: pipeline-demo
-                      template:
-                        metadata:
-                          labels:
-                            name: pipeline-demo
-                        spec:
-                          containers:
-                          - name: pipeline-demo
-                            image: ${params.HARBOR_HOST}/${params.DOCKER_IMAGE}:${GIT_TAG}
-                            ports:
-                            - containerPort: 2002
+                sh "apiVersion: v1 \
+                    kind: ReplicationController \
+                    metadata: \
+                      name: pipeline-demo \
+                      labels: \
+                        name: pipeline-demo \
+                    spec: \
+                      replicas: 1 \
+                      selector: \
+                        name: pipeline-demo \
+                      template: \
+                        metadata:\
+                          labels:\
+                            name: pipeline-demo\
+                        spec:\
+                          containers:\
+                          - name: pipeline-demo\
+                            image: ${params.HARBOR_HOST}/${params.DOCKER_IMAGE}:${GIT_TAG}\
+                            ports:\
+                            - containerPort: 2002\
                     EFO"
                 sh "rancher kubectl delete -f k8s-rc.yaml --ignore-not-found=true"
                 sh "sleep 5"
