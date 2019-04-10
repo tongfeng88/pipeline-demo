@@ -22,5 +22,5 @@ spec:
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: {SPRING_PROFILE}
-        imagePullSecrets:
-          - name: registry-harbor
+      imagePullSecrets:
+        - name: registry-harbor
