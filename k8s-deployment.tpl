@@ -18,7 +18,7 @@ spec:
       - name: {APP_NAME}
         image: {IMAGE_URL}:{IMAGE_TAG}
         ports:
-        - containerPort: 400802
+        - containerPort: 65530
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: {SPRING_PROFILE}
