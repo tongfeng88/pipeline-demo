@@ -50,31 +50,8 @@ pipeline {
                 }
             }
             steps {
-                sh "cat >>k8s-rc.yaml <<EFO \
-                    apiVersion: v1 \
-                    kind: ReplicationController \
-                    metadata: \
-                      name: pipeline-demo \
-                      labels: \
-                        name: pipeline-demo \
-                    spec: \
-                      replicas: 1 \
-                      selector: \
-                        name: pipeline-demo \
-                      template: \
-                        metadata:\
-                          labels:\
-                            name: pipeline-demo\
-                        spec:\
-                          containers:\
-                          - name: pipeline-demo\
-                            image: ${params.HARBOR_HOST}/${params.DOCKER_IMAGE}:${GIT_TAG}\
-                            ports:\
-                            - containerPort: 2002\
-                    EFO"
-                sh "kubectl delete -f k8s-rc.yaml --ignore-not-found=true"
-                sh "sleep 5"
-                sh "kubectl create -f k8s-rc.yaml"
+                sh "sed -e 's#{IMAGE_URL}#${params.HARBOR_HOST}/${params.DOCKER_IMAGE}#g;s#{IMAGE_TAG}#${GIT_TAG}#g;s#{APP_NAME}#${params.APP_NAME}#g;s#{SPRING_PROFILE}#k8s-test#g' k8s-deployment.tpl > k8s-deployment.yml"
+                sh "kubectl apply -f k8s-deployment.yml --namespace=${params.K8S_NAMESPACE}"
             }
             
         }
