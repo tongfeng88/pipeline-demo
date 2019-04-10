@@ -50,8 +50,8 @@ pipeline {
                 }
             }
             steps {
-                sh "cat >k8s-rc.yaml <<EFO"
-                sh  "apiVersion: v1 \
+                sh "cat >>k8s-rc.yaml <<EFO \
+                    apiVersion: v1 \
                     kind: ReplicationController \
                     metadata: \
                       name: pipeline-demo \
@@ -72,9 +72,9 @@ pipeline {
                             ports:\
                             - containerPort: 2002\
                     EFO"
-                sh "rancher kubectl delete -f k8s-rc.yaml --ignore-not-found=true"
+                sh "kubectl delete -f k8s-rc.yaml --ignore-not-found=true"
                 sh "sleep 5"
-                sh "rancher kubectl create -f k8s-rc.yaml"
+                sh "kubectl create -f k8s-rc.yaml"
             }
             
         }
