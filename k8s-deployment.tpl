@@ -23,4 +23,4 @@ spec:
           - name: SPRING_PROFILES_ACTIVE
             value: {SPRING_PROFILE}
       imagePullSecrets:
-        - name: harbor
+        - name: login
