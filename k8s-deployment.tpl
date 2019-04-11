@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: {APP_NAME}
-        image: {IMAGE_URL}:{IMAGE_TAG}
+        image: {params.HARBOR_HOST}/{IMAGE_URL}:{IMAGE_TAG}
         ports:
         - containerPort: 65530
         env:
