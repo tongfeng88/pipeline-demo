@@ -7,7 +7,7 @@ pipeline {
         GIT_TAG = sh(returnStdout: true,script: 'git describe --tags').trim()
     }
     parameters {
-        string(name: 'HARBOR_HOST', defaultValue: '192.168.2.10:8999', description: 'harbor仓库地址')
+        string(name: 'HARBOR_HOST', defaultValue: 'test.myharbor.com', description: 'harbor仓库地址')
         string(name: 'DOCKER_IMAGE', defaultValue: 'tongfeng88/pipeline-demo', description: 'docker镜像名')
         string(name: 'APP_NAME', defaultValue: 'pipeline-demo', description: 'k8s中标签名')
         string(name: 'K8S_NAMESPACE', defaultValue: 'default', description: 'k8s的namespace名称')
